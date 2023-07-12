@@ -22,10 +22,10 @@ int main()
                 pointer--;
                 break;
             case '+':
-                tape[pointer] += 1;
+                tape[pointer]++;
                 break;
             case '-':
-                tape[pointer] -= 1;
+                tape[pointer]--;
                 break;
             case '.':
                 printf("%c",tape[pointer]);
