@@ -8,11 +8,10 @@ int main()
 {
     int pointer = 0;
     int cmd_pointer = 0;
-    int current_bracket = -1;
-    int* bracket_pointers = calloc(1000,sizeof(int));
-    int* tape = calloc(3000,sizeof(int));
+    char* tape = calloc(30000,sizeof(char));
 
     char command[] = ">>>>++>+[[>[>>]<[>+>]<<[>->>+<<<-]>+[[+>>[<<+>>-]>]+[-<<+<]>-[-[<+>>+<-]++++++[>++++++++<-]+>.[-]<<[>>>[[<<+>+>-]>>>]<<<<[[>+<-]<-<<]>-]>>>[<<-[<<+>>-]<+++++++++<[>[->+>]>>>[<<[<+>-]>>>+>>[-<]<[>]>+<]<<<<<<-]>[-]>+>>[<<<+>>>-]>>>]<<<+[-[+>>]<<<]>[<<<]>]>>>[<[>>>]<<<[[>>>+<<<-]<<<]>>>>>>>-[<]>>>[<<]<<[>+>]<]<<]++>>]<<++++++++.+]";
+
 
     while(command[cmd_pointer] != '\0'){
         switch(command[cmd_pointer]) {
@@ -29,29 +28,43 @@ int main()
                 tape[pointer] -= 1;
                 break;
             case '.':
-                printf("%d",tape[pointer]);
+                printf("%c",tape[pointer]);
                 break;
             case ',':
                 scanf("%c",&(tape[pointer]));
                 break;
             case '[':
-                if(tape[pointer]!=0){
-                    current_bracket++;
-                    bracket_pointers[current_bracket] = cmd_pointer;
-                }
-                else{
-                    while(command[cmd_pointer] != ']'){
+                if(tape[pointer] == 0){
+                    int l = 1;
+                    int r = 0;
+                    while(l != r){
                         cmd_pointer++;
+                        switch(command[cmd_pointer]){
+                            case '[':
+                                l++;
+                                break;
+                            case ']':
+                                r++;
+                                break;
+                        }
                     }
                 }
-
                 break;
             case ']':
                 if(tape[pointer] != 0){
-                    cmd_pointer = bracket_pointers[current_bracket] - 1; // moze -1?
-                }
-                else{
-                    current_bracket--;
+                    int l = 0;
+                    int r = 1;
+                    while(l != r){
+                        cmd_pointer--;
+                        switch(command[cmd_pointer]){
+                            case '[':
+                                l++;
+                                break;
+                            case ']':
+                                r++;
+                                break;
+                        }
+                    }
                 }
                 break;
         }
