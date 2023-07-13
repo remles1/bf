@@ -6,23 +6,32 @@
 
 int main(int argc, char *argv[])
 {
+    if(argc < 2) {
+        printf("no file to read\n");
+        return -1;
+    }
+    if(argc > 2){
+        printf("too many arguments");
+        return -2;
+    }
+
     FILE* ptr;
     char ch;
 
     ptr = fopen(argv[1], "r");
 
     if (NULL == ptr) {
-        printf("file can't be opened \n");
-        return -1;
+        printf("file can't be opened\n");
+        return -3;
     }
-
 
 
     fseek(ptr, 0, SEEK_END);
     int size = ftell(ptr);
     fseek(ptr, 0, SEEK_SET);
 
-    char* command = malloc(size * sizeof(char) + 1);
+    int malloc_size = (size+1) * sizeof(char);
+    char* command = malloc(malloc_size);
     int i = 0;
 
     do {
@@ -30,11 +39,10 @@ int main(int argc, char *argv[])
         command[i] = ch;
         i++;
     } while (ch != EOF);
-    command[i-1] = '\0';
+    command[size] = '\0';
     fclose(ptr);
 
 
-    //char command[] = ">>>->+>+++++>(++++++++++)[[>>>+<<<-]>+++++>+>>+[<<+>>>>>+<<<-]<-]>>>>[[>>>+>+<<<<-]+++>>+[<+>>>+>+<<<-]>>[>[[>>>+<<<-]<]<<++>+>>>>>>-]<-]+++>+>[[-]<+<[>+++++++++++++++++<-]<+]>>[[+++++++++.-------->>>]+[-<<<]>>>[>>,----------[>]<]<<[<<<[>--[<->>+>-<<-]<[[>>>]+>-[+>>+>-]+[<<<]<-]>++>[<+>-]>[[>>>]+[<<<]>>>-]+[->>>]<-[++>]>[------<]>+++[<<<]>]<]>[-[+>>+>-]+>>+>>>+>[<<<]>->+>[>[->+>+++>>++[>>>]+++<<<++<<<++[>>>]>>>]<<<[>[>>>]+>>>]<<<<<<<[<<++<+[-<<<+]->++>>>++>>>++<<<<]<<<+[-<<<+]+>->>->>]<<+<<+<<<+<<-[+<+<<-]+<+[->+>[-<-<<[<<<]>[>>[>>>]<<+<[<<<]>-]]<[<[<[<<<]>+>>[>>>]<<-]<[<<<]]>>>->>>[>>>]+>]>+[-<<[-]<]-[[>>>]<[<<[<<<]>>>>>+>[>>>]<-]>>>[>[>>>]<<<<+>[<<<]>>-]>]<<<<<<[---<-----[-[-[<->>+++<+++++++[-]]]]<+<+]>]>>]";
     int pointer = 0;
     int cmd_pointer = 0;
     char* tape = calloc(30000,sizeof(char));
@@ -98,5 +106,7 @@ int main(int argc, char *argv[])
         cmd_pointer++;
     }
 
+    free(command);
+    free(tape);
     return 0;
 }
