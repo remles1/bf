@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
 
     int pointer = 0;
     int cmd_pointer = 0;
-    char* tape = calloc(30000,sizeof(char));
+    char* tape = calloc(1000000,sizeof(char));
 
 
     while(command[cmd_pointer] != '\0'){
